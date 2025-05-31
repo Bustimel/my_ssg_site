@@ -1,0 +1,36 @@
+---
+layout: base.html
+title: "Автобусні маршрути по Україні – Bus-Timel"
+---
+
+<section class="py-12 px-4 bg-transparent min-h-screen">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+        <aside class="md:col-span-1 bg-white p-6 rounded-xl shadow-lg glass" data-aos="fade-right">
+            <h2 class="text-2xl font-extrabold text-blue-800 mb-4">Пошук Маршруту</h2>
+            <p class="text-sm text-gray-700 mb-6">Оберіть пункт відправлення та прибуття, щоб знайти найкращий рейс для вашої подорожі.</p>
+            <form class="space-y-4" id="route-search-form-sidebar">
+                <select class="w-full" id="search-start-sidebar" name="search_start_sidebar">
+                    <option value="">Звідки</option>
+                </select>
+                <select class="w-full" id="search-end-sidebar" name="search_end_sidebar">
+                    <option value="">Куди</option>
+                </select>
+                <button class="bg-blue-600 text-white w-full py-3 rounded-full hover:bg-blue-700 transition duration-150 ease-in-out font-semibold" type="submit">Знайти</button>
+            </form>
+            <button id="reset-filters" class="bg-gray-300 text-gray-700 w-full py-3 rounded-full hover:bg-gray-400 transition duration-150 ease-in-out font-semibold mt-4" type="button" style="display: none;">Скинути фільтри</button>
+        </aside>
+
+        <main class="md:col-span-3">
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 sm:mb-0" data-aos="fade-left">Усі доступні напрямки</h1>
+                <div id="route-count" class="text-md text-gray-600 font-medium" data-aos="fade-left" data-aos-delay="100"></div>
+            </div>
+            <div class="space-y-4" id="routes-list">
+                <p id="loading-message" class="text-center text-gray-600 col-span-full">Завантаження маршрутів...</p>
+                </div>
+            <button id="show-more" class="w-full mt-8 py-3 px-6 text-white font-semibold rounded-full shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 transition ease-in-out duration-150" style="display: none;">
+                Показати ще маршрути
+            </button>
+        </main>
+    </div>
+</section>

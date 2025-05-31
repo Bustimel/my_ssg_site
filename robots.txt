@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+
+Sitemap: https://bus-timel.com.ua/sitemap.xml
+Sitemap: https://bus-timel.com.ua/sitemap.xml.gz
+
+Host: bus-timel.com.ua

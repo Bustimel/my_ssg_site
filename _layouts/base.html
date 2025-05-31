@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="{{ metadata.language | default('uk') }}">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <title>{{ title | default('Bus-Timel: Автобусні перевезення по Україні') }}</title>
+
+    <meta content="index, follow" name="robots"/>
+    <link href="{{ metadata.base_url | default('https://bus-timel.com.ua') }}{{ page.url | default('/') }}" rel="canonical"/>
+    <meta content="{{ description | default('Bus-Timel пропонує щоденні пасажирські перевезення по Україні. Комфортні автобусні рейси з Києва, Вінниці, Дніпра, Краматорська, Черкас, Умані та інших міст. Бронювання квитків без передоплат, доступні ціни, сучасний автопарк.') }}" name="description"/>
+    <meta content="автобус Україна, пасажирські перевезення, міжміські рейси, бронювання квитків, Bus-Timel, Київ, Вінниця, Дніпро, Краматорськ, Черкаси, Умань, Кропивницький, Гайсин, Павлоград, Добропілля" name="keywords"/>
+
+    <meta content="{{ title | default('Bus-Timel: Пасажирські перевезення по Україні') }}" property="og:title"/>
+    <meta content="{{ description | default('Bus-Timel пропонує щоденні пасажирські перевезення по Україні. Комфортні автобусні рейси з Києва, Вінниці, Дніпра, Краматорська, Черкас, Умані та інших міст. Бронювання квитків без передоплат, доступні ціни, сучасний автопарк.') }}" property="og:description"/>
+    <meta content="{{ page.og_image | default(metadata.base_url | default('https://bus-timel.com.ua') ~ '/assets/img/og-image.jpg') }}" property="og:image"/>
+    <meta content="{{ metadata.base_url | default('https://bus-timel.com.ua') }}{{ page.url | default('/') }}" property="og:url"/>
+    <meta content="{{ page.type | default('website') }}" property="og:type"/>
+
+    {# Hreflang теги (якщо сайт багатомовний) - розкоментуйте та налаштуйте відповідно до вашого SSG #}
+    {# {% if page.alternate_languages %}
+      {% for lang_version in page.alternate_languages %}
+        <link rel="alternate" hreflang="{{ lang_version.lang_code }}" href="{{ metadata.base_url }}{{ lang_version.url }}" />
+      {% endfor %}
+      {% if page.x_default_url %}
+        <link rel="alternate" hreflang="x-default" href="{{ metadata.base_url }}{{ page.x_default_url }}" />
+      {% endif %}
+    {% endif %} #}
+
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="anonymous" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+    <link rel="preload" href="/assets/img/background.webp" as="image">
+    <link rel="preload" href="/assets/img/fleet/sprinter18.webp" as="image">
+    {# <link rel="preload" href="/assets/img/background-mobile.webp" as="image" media="(max-width: 640px)"> #}
+
+    {# Tailwind CSS Play CDN - для продакшену рекомендується налаштувати процес збірки Tailwind CSS #}
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" integrity="sha384-/rJKQnzOkEo+daG0jMjU1IwwY9unxt1NBw3Ef2fmOJ3PW/TfAg2KXVoWwMZQZtw9" crossorigin="anonymous"/>
+    <link href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" integrity="sha384-n0GACcBzAGKp29zpmkTj4eje26AGm3wqHG9TROENrVHXySIkFf8nwmY5IgVr5qen" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <link href="/assets/img/favicon/favicon.ico" rel="icon" type="image/x-icon"/>
+    <link href="/assets/img/favicon/apple-touch-icon.png" rel="apple-touch-icon"/>
+    <link href="/assets/img/favicon/manifest.json" rel="manifest"/>
+    <meta content="#003b8d" name="theme-color"/>
+    <meta content="yes" name="mobile-web-app-capable"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "{{ metadata.siteName | default('Bus-Timel') }}",
+      "url": "{{ metadata.base_url | default('https://bus-timel.com.ua') }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "{{ metadata.base_url | default('https://bus-timel.com.ua') }}/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    {% if page.url == '/' %} {# ItemList (Популярні маршрути) - тільки для головної #}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Популярні автобусні маршрути Bus-Timel",
+      "description": "Список популярних міжміських автобусних маршрутів по Україні від компанії Bus-Timel.",
+      "itemListElement": [
+        { "@type": "Trip", "position": 1, "name": "Маршрут Краматорськ – Черкаси", "url": "https://bus-timel.com.ua/routes/kramatorsk-cherkasy.html", "description": "Автобусний рейс з Краматорська до Черкас. Відправлення: Уточнюйте, час у дорозі: Уточнюйте, ціна: Уточнюйте грн.", "offers": { "@type": "Offer", "priceCurrency": "UAH", "priceSpecification": {"price": "Уточнюйте"} } },
+        { "@type": "Trip", "position": 2, "name": "Маршрут Слов’янськ – Вінниця", "url": "https://bus-timel.com.ua/routes/sloviansk-vinnytsia.html", "description": "Автобусний рейс з Слов'янська до Вінниці. Відправлення: Уточнюйте, час у дорозі: Уточнюйте, ціна: Уточнюйте грн.", "offers": { "@type": "Offer", "priceCurrency": "UAH", "priceSpecification": {"price": "Уточнюйте"} } },
+        { "@type": "Trip", "position": 3, "name": "Маршрут Київ – Дніпро", "url": "https://bus-timel.com.ua/routes/kyiv-dnipro.html", "description": "Автобусний рейс з Києва до Дніпра. Відправлення: Уточнюйте, час у дорозі: Уточнюйте, ціна: Уточнюйте грн.", "offers": { "@type": "Offer", "priceCurrency": "UAH", "priceSpecification": {"price": "Уточнюйте"} } },
+        { "@type": "Trip", "position": 4, "name": "Маршрут Вінниця – Київ", "url": "https://bus-timel.com.ua/routes/vinnytsia-kyiv.html", "description": "Автобусний рейс з Вінниці до Києва. Відправлення: Уточнюйте, час у дорозі: Уточнюйте, ціна: Уточнюйте грн.", "offers": { "@type": "Offer", "priceCurrency": "UAH", "priceSpecification": {"price": "Уточнюйте"} } },
+        { "@type": "Trip", "position": 5, "name": "Маршрут Дніпро – Умань", "url": "https://bus-timel.com.ua/routes/dnipro-uman.html", "description": "Автобусний рейс з Дніпра до Умані. Відправлення: Уточнюйте, час у дорозі: Уточнюйте, ціна: Уточнюйте грн.", "offers": { "@type": "Offer", "priceCurrency": "UAH", "priceSpecification": {"price": "Уточнюйте"} } },
+        { "@type": "Trip", "position": 6, "name": "Маршрут Черкаси – Кропивницький", "url": "https://bus-timel.com.ua/routes/cherkasy-kropyvnytskyi.html", "description": "Автобусний рейс з Черкас до Кропивницького. Відправлення: Уточнюйте, час у дорозі: Уточнюйте, ціна: Уточнюйте грн.", "offers": { "@type": "Offer", "priceCurrency": "UAH", "priceSpecification": {"price": "Уточнюйте"} } },
+        { "@type": "Trip", "position": 7, "name": "Маршрут Павлоград – Гайсин", "url": "https://bus-timel.com.ua/routes/pavlohrad-haisyn.html", "description": "Автобусний рейс з Павлограда до Гайсина. Відправлення: Уточнюйте, час у дорозі: Уточнюйте, ціна: Уточнюйте грн.", "offers": { "@type": "Offer", "priceCurrency": "UAH", "priceSpecification": {"price": "Уточнюйте"} } },
+        { "@type": "Trip", "position": 8, "name": "Маршрут Добропілля – Київ", "url": "https://bus-timel.com.ua/routes/dobropillia-kyiv.html", "description": "Автобусний рейс з Доброполья до Києва. Відправлення: Уточнюйте, час у дорозі: Уточнюйте, ціна: Уточнюйте грн.", "offers": { "@type": "Offer", "priceCurrency": "UAH", "priceSpecification": {"price": "Уточнюйте"} } },
+        { "@type": "Trip", "position": 9, "name": "Маршрут Краматорськ – Львів", "url": "https://bus-timel.com.ua/routes/kramatorsk-lviv.html", "description": "Автобусний рейс з Краматорськ до Львів. Відправлення о 5:00, час у дорозі 5:00 – 22:10, ціна: Уточнюйте грн.", "offers": { "@type": "Offer", "priceCurrency": "UAH", "priceSpecification": {"price": "Уточнюйте"} } },
+        { "@type": "Trip", "position": 10, "name": "Маршрут Дніпро – Вінниця", "url": "https://bus-timel.com.ua/routes/dnipro-vinnytsia.html", "description": "Автобусний рейс з Дніпро до Вінниця. Відправлення о 9:00, час у дорозі 9:00 – 15:50, ціна: 1200 грн.", "offers": { "@type": "Offer", "price": 1200, "priceCurrency": "UAH" } }
+      ]
+    }
+    </script>
+    {% endif %}
+
+    {% if page.breadcrumbs and page.breadcrumbs.length > 0 %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {% for crumb in page.breadcrumbs %}
+        {
+          "@type": "ListItem",
+          "position": {{ loop.index }},
+          "name": "{{ crumb.name }}",
+          {% if crumb.url %}"item": "{{ metadata.base_url }}{{ crumb.url }}"{% endif %}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ]
+    }
+    </script>
+    {% else %}
+    {# Fallback BreadcrumbList, якщо page.breadcrumbs не визначено (наприклад, для головної сторінки) #}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Головна", "item": "{{ metadata.base_url | default('https://bus-timel.com.ua') }}/" }
+        ]
+    }
+    </script>
+    {% endif %}
+
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          { "@type": "Question", "name": "Як замовити квиток на автобус?", "acceptedAnswer": { "@type": "Answer", "text": "Оберіть маршрут, заповніть форму та натисніть 'Бронювати'. Наш менеджер зв'яжеться з вами."}},
+          { "@type": "Question", "name": "Чи потрібно робити передоплату?", "acceptedAnswer": { "@type": "Answer", "text": "Ні, Bus-Timel не вимагає передоплат — ви оплачуєте при посадці."}},
+          { "@type": "Question", "name": "Чи можна взяти багаж?", "acceptedAnswer": { "@type": "Answer", "text": "Так, у вартість включено 1 валізу та ручну поклажу. Додатковий багаж — за домовленістю."}}
+        ]
+      },
+      { "@context": "https://schema.org", "@type": "Organization", "name": "Bus-Timel (ФОП Панін В.Б.)", "url": "{{ metadata.base_url | default('https://bus-timel.com.ua') }}", "logo": "{{ metadata.base_url | default('https://bus-timel.com.ua') }}/assets/img/logo.png", "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "125" }},
+      { "@context": "https://schema.org", "@type": "LocalBusiness", "name": "Bus-Timel (ФОП Панін В.Б.)", "image": "{{ metadata.base_url | default('https://bus-timel.com.ua') }}/assets/img/logo.png", "telephone": "+380753750000", "address": { "@type": "PostalAddress", "addressLocality": "Вінниця", "addressRegion": "Вінницька область", "addressCountry": "UA" }, "url": "{{ metadata.base_url | default('https://bus-timel.com.ua') }}", "sameAs": ["https://instagram.com/bus_timel", "https://t.me/bus_timel"]}
+    ]
+    </script>
+</head>
+<body class="text-gray-800">
+    <a href="#main-content" class="sr-only skip-link">Перейти до основного вмісту</a>
+
+    {% include "header.html" %}
+
+    <main id="main-content">
+        {{ content | safe }}
+    </main>
+
+    {% include "footer.html" %}
+
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-L2S6V6W24B"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-L2S6V6W24B');
+    </script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" integrity="sha384-wziAfh6b/qT+3LrqebF9WeK4+J5sehS6FA10J1t3a866kJ/fvU5UwofWnQyzLtwu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" integrity="sha384-WXCib67DFM/o9ln5XWnf/xepwCGB7NzCdkB7J8Iy8tSgnOR5s3iVHB7LobqBEWCv" crossorigin="anonymous"></script>
+
+    <script src="/assets/js/main.js" defer></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('Service Worker зареєстровано успішно:', registration.scope);
+                })
+                .catch(error => {
+                    console.log('Ошибка реєстрації Service Worker:', error);
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>

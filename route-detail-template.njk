@@ -1,0 +1,129 @@
+---
+pagination:
+  data: eleventyRoutes # Переконайся, що eleventyRoutes - це назва твоїх оброблених даних з _data
+  size: 1
+  alias: route
+permalink: "/routes/{{ route.url_slug }}.html"
+layout: base.html # Або твій основний шаблон
+eleventyComputed:
+  title: >-
+    Автобус {{ route.start_city_display_uk if route.start_city_display_uk else "Маршрут" }} –
+    {{ route.end_city_display_uk if route.end_city_display_uk else "" }}
+    | Bus-Timel
+  description: >-
+    Бронювання квитків на автобусний маршрут {{ route.route_name.uk if route.route_name and route.route_name.uk else (route.start_city_display_uk + " – " + route.end_city_display_uk if route.start_city_display_uk and route.end_city_display_uk else "не вказано") }}.
+    Ціна: {{ route.price if route.price }}{% if route.price and route.price | string | lower != "уточнюйте" and route.price | string | lower != "уточняйте" and route.price | string | length > 0 and (route.price is number or (route.price | string).match('^[0-9\\.,]+$')) %} грн{% endif %}.
+    {{ route.frequency | capitalize if route.frequency }}.
+    Відправлення (з {{ route.start_city_display_uk if route.start_city_display_uk else "не вказано" }}): {{ route.stops[0].time if route.stops and route.stops[0] and route.stops[0].time else "уточнюйте" }}.
+  canonicalUrl: "https://bus-timel.com.ua/routes/{{ route.url_slug }}.html" # ЗАМІНИ НА СВІЙ ДОМЕН, ЯКЩО ПОТРІБНО
+---
+
+<section class="py-12 px-4 bg-transparent min-h-screen route-detail-page">
+    <div class="max-w-4xl mx-auto">
+        {% set startCityDisplay = route.start_city_display_uk if route.start_city_display_uk else (route.stops[0].city.uk if route.stops and route.stops[0] and route.stops[0].city and route.stops[0].city.uk else "N/A") %}
+        {% set endCityDisplay = route.end_city_display_uk if route.end_city_display_uk else (route.stops[route.stops.length - 1].city.uk if route.stops and route.stops.length > 0 and route.stops[route.stops.length - 1].city and route.stops[route.stops.length - 1].city.uk else "N/A") %}
+        {% set routePageTitle = (startCityDisplay + " – " + endCityDisplay) if startCityDisplay != "N/A" and endCityDisplay != "N/A" else (route.route_name.uk if route.route_name and route.route_name.uk else "Деталі маршруту") %}
+
+        <div class="text-center mb-8" data-aos="fade-up">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-black">{{ routePageTitle }}</h1>
+            <div class="contacts-top text-sm text-gray-700 mt-2">
+                📞 <a href="tel:+380753750000" class="text-blue-600 hover:underline">+38 075 375 00 00</a> |
+                Viber: <a href="viber://chat?number=+380753750000" class="text-blue-600 hover:underline">чат у Viber</a> |
+                Telegram: <a href="https://t.me/bus_timel" class="text-blue-600 hover:underline">чат у Telegram</a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div class="md:col-span-1" data-aos="fade-right">
+                <img src="{{ route.image_path | default('/assets/img/routes/default-route.webp') }}" alt="Автобус на маршруті {{ routePageTitle }}" class="w-full h-auto object-cover rounded-lg shadow-md">
+            </div>
+            <div class="md:col-span-2 glass p-6 rounded-xl shadow-lg" data-aos="fade-left">
+                <h2 class="text-2xl font-bold text-blue-800 mb-4">Інформація про рейс</h2>
+                <ul class="space-y-2 text-gray-700">
+                    <li><strong>Маршрут:</strong> {{ routePageTitle }}</li>
+                    <li><strong>Ціна:</strong> {{ route.price if route.price }} {% if route.price and route.price | string | lower != "уточнюйте" and route.price | string | lower != "уточняйте" and route.price | string | length > 0 and (route.price is number or (route.price | string).match('^[0-9\\.,]+$')) %}грн{% endif %}</li>
+                    <li><strong>Частота:</strong> {{ route.frequency | capitalize if route.frequency }}</li>
+                    
+                    {%- set firstStop = route.stops[0] if route.stops and route.stops.length > 0 -%}
+                    {%- set lastStop = route.stops[route.stops.length - 1] if route.stops and route.stops.length > 0 -%}
+                    
+                    {% if firstStop and firstStop.city and firstStop.city.uk and firstStop.time %}
+                        <li><strong>Відправлення (з {{ firstStop.city.uk }}):</strong> {{ firstStop.time }}</li>
+                    {% endif %}
+                    {% if lastStop and lastStop.city and lastStop.city.uk and lastStop.time and route.stops.length > 1 %}
+                        <li><strong>Прибуття (в {{ lastStop.city.uk }}):</strong> {{ lastStop.time }}</li>
+                    {% endif %}
+
+                    {% if route.duration %}
+                        <li><strong>Час у дорозі:</strong> {{ route.duration }}</li>
+                    {% elif firstStop and firstStop.time and lastStop and lastStop.time and route.stops.length > 1 %}
+                        <li><strong>Час відправлення/прибуття:</strong> {{ firstStop.time }} – {{ lastStop.time }}</li>
+                    {% else %}
+                         <li><strong>Час у дорозі:</strong> Уточнюйте</li>
+                    {% endif %}
+                </ul>
+                <a href="#booking-form-on-route-page" class="mt-6 inline-block bg-yellow-400 text-black rounded-full px-8 py-3 font-semibold transition hover:bg-yellow-500 shadow-md">Забронювати квиток на цей рейс</a>
+            </div>
+        </div>
+
+        {% if route.stops and route.stops.length > 0 %}
+        <div class="mb-12 overflow-x-auto" data-aos="fade-up">
+            <h2 class="text-2xl font-bold text-blue-800 mb-4 text-center">Розклад та зупинки маршруту {{ routePageTitle }}</h2>
+            <table class="min-w-full bg-white rounded-lg shadow overflow-hidden glass">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase">Місто</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase">Адреса зупинки</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase">Час</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for stop in route.stops %}
+                    <tr>
+                        <td class="py-3 px-4 text-sm text-gray-700">{{ stop.city.uk if stop.city and stop.city.uk else 'N/A' }}</td>
+                        <td class="py-3 px-4 text-sm text-gray-700">{{ stop.address.uk if stop.address and stop.address.uk else 'N/A' }}</td>
+                        <td class="py-3 px-4 text-sm text-gray-700">{{ stop.time if stop.time else 'N/A' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-center text-gray-600 mb-12">Детальний розклад зупинок для цього маршруту уточнюйте у оператора.</p>
+        {% endif %}
+
+        <div class="booking-content glass rounded-xl p-6 shadow-xl" id="booking-form-on-route-page" data-aos="fade-up">
+            <h2 class="text-2xl font-bold mb-4 text-center">Забронювати квиток на рейс: <br class="sm:hidden"><strong>{{ routePageTitle }}</strong></h2>
+            <form action="/send_mail.php" class="space-y-4" id="booking-form-route-{{ route.url_slug }}" method="POST">
+                <input name="form_type" type="hidden" value="booking_route_page"/>
+                <input name="route_name_field" type="hidden" value="{{ routePageTitle }}"/>
+                {# Ці поля потрібні, щоб PHP міг їх отримати, якщо вони важливі для листа/Telegram #}
+                <input name="start_city_fixed" type="hidden" value="{{ startCityDisplay if startCityDisplay != 'N/A' }}"/>
+                <input name="end_city_fixed" type="hidden" value="{{ endCityDisplay if endCityDisplay != 'N/A' }}"/>
+                {# Поле-пастка для ботів #}
+                <input type="text" name="honeypot" style="display:none !important;" tabindex="-1" autocomplete="off">
+                
+                <label for="name-route-page-{{ route.url_slug }}" class="sr-only">Ваше ім'я</label>
+                <input class="rounded-full p-3 border border-gray-300 focus:outline-none text-center w-full" id="name-route-page-{{ route.url_slug }}" name="name" placeholder="Ваше ім'я" required="" type="text" autocomplete="name"/>
+                
+                <div class="rounded-full overflow-hidden border border-gray-300 w-full">
+                    <label for="phone-route-page-{{ route.url_slug }}" class="sr-only">Ваш телефон</label>
+                    <input class="p-3 text-center focus:outline-none w-full" id="phone-route-page-{{ route.url_slug }}" name="phone" placeholder="Ваш телефон" required="" type="tel" autocomplete="tel"/>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <label for="date-route-page-{{ route.url_slug }}" class="sr-only">Дата</label>
+                    <input class="rounded-full p-3 border border-gray-300 focus:outline-none text-center w-full sm:w-auto" id="date-route-page-{{ route.url_slug }}" name="date" placeholder="Дата" required="" type="date"/>
+                    <button class="submit-button glass-button rounded-full w-full sm:w-auto" type="submit" aria-label="Забронювати квиток">
+                        <svg class="w-5 h-5 inline-block mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>Бронювати
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="mt-12 text-gray-700 space-y-4" data-aos="fade-up">
+            <p>Bus-Timel (ФОП Панін В.Б.) гарантує комфортну та безпечну поїздку за маршрутом {{ routePageTitle }}. Ми пропонуємо щоденні рейси на сучасних мікроавтобусах, обладнаних Wi-Fi та кондиціонерами.</p>
+            <p>Щоб дізнатися більше про інші напрямки або переглянути повний список, відвідайте нашу сторінку <a href="/routes/" class="text-blue-600 hover:underline">автобусних маршрутів</a>.</p>
+        </div>
+    </div>
+</section>

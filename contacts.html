@@ -1,0 +1,65 @@
+---
+layout: base.html
+title: "Контакти Bus-Timel – Пасажирські перевезення по Україні | Бронювання квитків"
+---
+
+<section class="py-16 px-4 contacts-section" data-aos="fade-up">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-6 text-center text-black">Контакти для бронювання автобусних перевезень з Bus-Timel</h1>
+      <div class="contacts-top text-center text-sm text-gray-700 mb-4">
+        📞 <a href="tel:+380753750000" class="text-blue-600 hover:underline">+38 075 375 00 00</a> |
+        Viber: <a href="viber://chat?number=+380753750000" class="text-blue-600 hover:underline">чат у Viber</a> |
+        Telegram: <a href="https://t.me/bus_timel" class="text-blue-600 hover:underline">чат у Telegram</a>
+      </div>
+      <h2 class="text-2xl font-bold mb-6 text-center text-black">Як зв’язатися з нашим сервісом пасажирських перевезень?</h2>
+      <img src="/assets/img/bus-timel-contacts.webp" alt="Контакти Bus-Timel – автобусні перевезення" class="w-full h-auto object-cover rounded-xl mb-10 shadow-lg">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="glass rounded-xl p-6 text-left">
+          <h2 class="text-xl font-semibold mb-4">Наші контакти:</h2>
+          <ul class="space-y-2">
+            <li><strong>Телефон:</strong> <a href="tel:+380753750000" class="text-blue-600 hover:underline">+38 075 375 00 00</a></li>
+            <li><strong>Viber:</strong> <a href="viber://chat?number=+380753750000" class="text-blue-600 hover:underline">Написати в Viber</a></li>
+            <li><strong>Telegram:</strong> <a href="https://t.me/bus_timel" class="text-blue-600 hover:underline" target="_blank">Написати в Telegram</a></li>
+            <li><strong>Email:</strong> <a href="mailto:info@bus-timel.com.ua" class="text-blue-600 hover:underline">info@bus-timel.com.ua</a></li>
+            <li><strong>Адреса:</strong> Україна, м. Вінниця (деталі уточнюйте у диспетчера)</li>
+          </ul>
+          <p class="mt-4 text-sm text-gray-600">Ми працюємо для вас щодня. Телефонуйте або пишіть у месенджери для швидкого бронювання та консультацій.</p>
+          <a href="tel:+380753750000" class="mt-4 inline-block bg-yellow-400 text-black rounded-full px-6 py-3 font-semibold transition hover:bg-yellow-500 shadow">Телефонуйте зараз для бронювання!</a>
+        </div>
+        <div class="glass rounded-xl p-6">
+          <h2 class="text-xl font-semibold mb-4">Напишіть нам</h2>
+          <form action="/send_mail.php" method="POST" class="space-y-4" id="contact-form">
+            <input type="hidden" name="form_type" value="contact"/>
+            {/* Ці поля UTM можна залишити, якщо ти відстежуєш джерела, або видалити, якщо вони не потрібні для контактної форми */}
+            <input type="hidden" name="utm_source" value="contacts_page_direct"/>
+            <input type="hidden" name="utm_medium" value="website"/>
+            <input type="hidden" name="utm_campaign" value="contact_form"/>
+            {/* Поле-пастка для ботів */}
+            <input type="text" name="honeypot" style="display:none !important;" tabindex="-1" autocomplete="off">
+
+            <label for="contact-name" class="sr-only">Ваше ім'я</label>
+            <input type="text" id="contact-name" name="name" required placeholder="Ваше ім'я" class="w-full rounded-full p-3 border border-gray-300 focus:outline-none" autocomplete="name"/>
+            
+            <label for="contact-email" class="sr-only">Ваш email</label>
+            <input type="email" id="contact-email" name="email" required placeholder="Ваш email" class="w-full rounded-full p-3 border border-gray-300 focus:outline-none" autocomplete="email"/>
+            
+            {/* Якщо для контактної форми потрібен телефон, розкоментуй та налаштуй це поле 
+            <label for="contact-phone" class="sr-only">Ваш телефон (необов'язково)</label>
+            <div class="rounded-full overflow-hidden border border-gray-300 w-full">
+                <input type="tel" id="contact-phone" name="phone" placeholder="Ваш телефон (необов'язково)" class="p-3 text-center focus:outline-none w-full" autocomplete="tel"/>
+            </div>
+            */}
+            
+            <label for="contact-message" class="sr-only">Ваше повідомлення</label>
+            <textarea id="contact-message" name="message" required placeholder="Ваше повідомлення" class="w-full rounded-lg p-3 border border-gray-300 focus:outline-none" rows="4"></textarea>
+            
+            <button type="submit" class="submit-button glass-button w-full">Відправити повідомлення!</button>
+          </form>
+        </div>
+      </div>
+      <div class="text-center mt-6">
+        <a class="btn-primary mr-2 bg-blue-600 text-white rounded-full px-6 py-3 font-semibold transition hover:bg-blue-700 shadow" href="/#booking?utm_source=contacts_page&amp;utm_medium=button&amp;utm_campaign=to_main_booking">Забронювати квиток зараз</a>
+      </div>
+    </div>
+</section>

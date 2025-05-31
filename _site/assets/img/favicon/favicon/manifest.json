@@ -1,0 +1,20 @@
+{
+  "name": "Bus-Timel",
+  "short_name": "Bus-Timel",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#003b8d"
+}
