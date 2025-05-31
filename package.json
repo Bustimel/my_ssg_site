@@ -1,5 +1,5 @@
 {
-  "name": "my_ssg_site",
+  "name": "bustimagus",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -13,11 +13,21 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
-    "@11ty/eleventy": "^3.1.0",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.4",
     "tailwindcss": "^4.1.8"
-  }
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bustimel/busTimaGus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Bustimel/busTimaGus.git"
+  },
+  "homepage": "https://github.com/Bustimel/busTimaGus#readme",
+  "description": ""
 }
